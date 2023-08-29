@@ -57,8 +57,14 @@ void ALL(int RunNumber = 708, int nevent = -1) {
          Int_t  NdataadcCounter;
 
         //Run over root files and trees
+        if (nevent == 50000){
+         f= new TFile(Form("../../ROOTfiles/COIN/50k/nps_hms_coin_%i_%i.root",RunNumber,nevent),"UPDATE");
+        }
+        else{
+         f= new TFile(Form("../../ROOTfiles/COIN/PRODUCTION/nps_hms_coin_%i_-1.root",RunNumber),"UPDATE");
+        }
 	
-	 f= new TFile(Form("../../ROOTfiles/NPS/nps_coin_%i.root",RunNumber),"UPDATE");
+	 
             t= (TChain *) f->Get("T");
             t->SetBranchAddress("NPS.cal.fly.adcSampPulseAmp",&adcSampPulseAmp) ;
             t->SetBranchAddress("Ndata.NPS.cal.fly.adcCounter",&NdataadcCounter) ;

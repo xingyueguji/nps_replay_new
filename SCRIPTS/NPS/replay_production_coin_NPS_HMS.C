@@ -1,4 +1,4 @@
-void replay_production_coin_NPS_HMS(Int_t RunNumber=0, Int_t MaxEvent=0)
+void replay_production_coin_NPS_HMS(int RunNumber=0, int MaxEvent=0)
 {
 
   // Get RunNumber and MaxEvent if not provided.
@@ -25,7 +25,15 @@ void replay_production_coin_NPS_HMS(Int_t RunNumber=0, Int_t MaxEvent=0)
   pathList.push_back("./raw/../raw.copiedtotape");
   pathList.push_back("./cache");
   pathList.push_back("/net/cdaq/cdaql1data/coda/data/raw");
-  const char* ROOTFileNamePattern = "ROOTfiles/NPS/nps_coin_%d.root";
+
+  const char* ROOTFileNamePattern;
+  if (MaxEvent == 50000){
+    ROOTFileNamePattern = "ROOTfiles/COIN/50k/nps_hms_coin_%d_%d.root";
+  }
+  else{
+    ROOTFileNamePattern = "ROOTfiles/COIN/PRODUCTION/nps_hms_coin_%d_%d.root";
+  }
+  
   
   // Add variables to global list.
   gHcParms->Define("gen_run_number", "Run Number", RunNumber); 
@@ -213,7 +221,7 @@ void replay_production_coin_NPS_HMS(Int_t RunNumber=0, Int_t MaxEvent=0)
   run->Print();
   
   // Define the analysis parameters
-  TString ROOTFileName = Form(ROOTFileNamePattern, RunNumber);
+  TString ROOTFileName = Form(ROOTFileNamePattern, RunNumber, MaxEvent);
 
   // Define the analysis parameters
   analyzer->SetEvent(event);
@@ -238,6 +246,6 @@ void replay_production_coin_NPS_HMS(Int_t RunNumber=0, Int_t MaxEvent=0)
   analyzer->Process(run);     
   // Create report file from template.
   analyzer->PrintReport("TEMPLATES/NPS/NPS_coin.template",
-			Form("REPORT_OUTPUT/NPS/coin_NPS_HMS_report_%d_%d.report", RunNumber, MaxEvent)); //FIXME:CHANGE
+			Form("REPORT_OUTPUT/COIN/coin_NPS_HMS_report_%d_%d.report", RunNumber, MaxEvent)); //FIXME:CHANGE
   
 }
